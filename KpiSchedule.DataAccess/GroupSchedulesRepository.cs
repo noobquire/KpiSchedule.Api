@@ -10,24 +10,24 @@ namespace KpiSchedule.DataAccess
     /// </summary>
     public class GroupSchedulesRepository : IGroupSchedulesRepository
     {
-        private readonly RozKpiGroupSchedulesRepository rozKpiGroupSchedulesRepository;
+        private readonly RozKpiGroupSchedulesRepository rozKpiGroupSchedules;
         private readonly IMapper mapper;
 
         /// <summary>
         /// Initialize a new instance of the <see cref="GroupSchedulesRepository"/> class.
         /// </summary>
-        /// <param name="rozKpiGroupSchedulesRepository">roz.kpi.ua group schedules repository.</param>
+        /// <param name="rozKpiGroupSchedules">roz.kpi.ua group schedules repository.</param>
         /// <param name="mapper">Mapping interface.</param>
-        public GroupSchedulesRepository(RozKpiGroupSchedulesRepository rozKpiGroupSchedulesRepository, IMapper mapper)
+        public GroupSchedulesRepository(RozKpiGroupSchedulesRepository rozKpiGroupSchedules, IMapper mapper)
         {
-            this.rozKpiGroupSchedulesRepository = rozKpiGroupSchedulesRepository;
+            this.rozKpiGroupSchedules = rozKpiGroupSchedules;
             this.mapper = mapper;
         }
 
         /// <inheritdoc/>
         public async Task<GroupScheduleEntity> GetScheduleById(Guid scheduleId)
         {
-            var rozKpiSchedule = await rozKpiGroupSchedulesRepository.GetScheduleById(scheduleId);
+            var rozKpiSchedule = await rozKpiGroupSchedules.GetScheduleById(scheduleId);
 
             var mappedSchedule = mapper.Map<GroupScheduleEntity>(rozKpiSchedule);
 
@@ -51,11 +51,25 @@ namespace KpiSchedule.DataAccess
         /// <inheritdoc/>
         public async Task<IEnumerable<GroupEntity>> SearchGroupSchedules(string groupNamePrefix)
         {
-            var rozKpiSchedules = await rozKpiGroupSchedulesRepository.SearchScheduleId(groupNamePrefix);
+            var rozKpiSchedules = await rozKpiGroupSchedules.SearchScheduleId(groupNamePrefix);
 
             var mappedSchedules = mapper.Map<IEnumerable<GroupEntity>>(rozKpiSchedules);
 
             return mappedSchedules;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<TeacherEntity>> GetTeachersInGroupSchedule(Guid groupScheduleId)
+        {
+            var schedule = await GetScheduleById(groupScheduleId);
+
+            var firstWeekTeachers = schedule.FirstWeek.SelectMany(d => d.Pairs).SelectMany(p => p.Teachers);
+            var secondWeekTeachers = schedule.SecondWeek.SelectMany(d => d.Pairs).SelectMany(p => p.Teachers);
+
+            var allTeachers = firstWeekTeachers.Concat(secondWeekTeachers);
+            var uniqueTeachers = allTeachers.DistinctBy(s => s.ScheduleId);
+
+            return uniqueTeachers;
         }
     }
 }

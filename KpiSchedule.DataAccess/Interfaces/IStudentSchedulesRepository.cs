@@ -1,9 +1,4 @@
 ﻿using KpiSchedule.DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KpiSchedule.DataAccess.Interfaces
 {
@@ -39,8 +34,15 @@ namespace KpiSchedule.DataAccess.Interfaces
         /// <param name="scheduleId">Schedule unique identifier.</param>
         /// <param name="pairId">Pair identifier.</param>
         /// <param name="pair">Pair entity.</param>
-        /// <returns></returns>
+        /// <returns>Updated student schedule.</returns>
         Task<StudentScheduleEntity> UpdatePair(Guid scheduleId, PairIdentifier pairId, StudentSchedulePairEntity pair);
+
+        /// <summary>
+        /// Hard delete pair from given student schedule.
+        /// </summary>
+        /// <param name="scheduleId">Student schedule unique identifier.</param>
+        /// <param name="pairId">Pair identifier.</param>
+        /// <returns>Task.</returns>
         Task DeletePair(Guid scheduleId, PairIdentifier pairId);
     }
 }

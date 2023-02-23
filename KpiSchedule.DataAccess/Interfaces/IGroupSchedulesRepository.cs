@@ -13,5 +13,12 @@ namespace KpiSchedule.DataAccess.Interfaces
         /// <param name="groupNamePrefix">Group name prefix to search for.</param>
         /// <returns>List of groups starting with specified prefix.</returns>
         Task<IEnumerable<GroupEntity>> SearchGroupSchedules(string groupNamePrefix);
+
+        /// <summary>
+        /// Get unique teachers in this group's schedule.
+        /// </summary>
+        /// <param name="groupScheduleId">Group schedule unique identifier.</param>
+        /// <returns>Teachers in group schedule.</returns>
+        Task<IEnumerable<TeacherEntity>> GetTeachersInGroupSchedule (Guid groupScheduleId);
     }
 }

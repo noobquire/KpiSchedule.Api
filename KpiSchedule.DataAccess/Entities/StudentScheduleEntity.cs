@@ -1,8 +1,12 @@
-﻿namespace KpiSchedule.DataAccess.Entities
+﻿using Amazon.DynamoDBv2.DataModel;
+using System.Runtime.InteropServices;
+
+namespace KpiSchedule.DataAccess.Entities
 {
     /// <summary>
     /// DB entity for personal student schedule.
     /// </summary>
+    [DynamoDBTable("KpiScheduleStudentSchedules")]
     public class StudentScheduleEntity : BaseScheduleEntity<StudentScheduleDayEntity, StudentSchedulePairEntity>
     {
         /// <summary>
@@ -13,6 +17,13 @@
         /// <summary>
         /// Id of the user who owns this schedule.
         /// </summary>
+        [DynamoDBHashKey]
         public Guid OwnerId { get; set; }
+
+        /// <summary>
+        /// Id of the schedule.
+        /// </summary>
+        [DynamoDBRangeKey]
+        public override Guid ScheduleId { get; set; }
     }
 }

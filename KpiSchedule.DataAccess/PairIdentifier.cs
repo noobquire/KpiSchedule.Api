@@ -16,8 +16,14 @@
         public int DayNumber { get; set; }
 
         /// <summary>
-        /// 1-based pair number.
+        /// 1-based pair number as in schedule.
         /// </summary>
         public int PairNumber { get; set; }
+
+        /// <summary>
+        /// 1-based number of the duplicate pair if there are multiple pairs conducted at the same time.
+        /// 1 if there is only single pair.
+        /// </summary>
+        public int DuplicatePairNumber { get; set; } = 1;
     }
 }

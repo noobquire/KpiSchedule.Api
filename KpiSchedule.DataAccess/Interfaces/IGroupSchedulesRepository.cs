@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KpiSchedule.DataAccess.Entities;
 
 namespace KpiSchedule.DataAccess.Interfaces
 {
-    public interface IGroupSchedulesRepository
+    /// <summary>
+    /// Interface for getting group schedules data from DB.
+    /// </summary>
+    public interface IGroupSchedulesRepository : ISchedulesRepository<GroupScheduleEntity, GroupScheduleDayEntity, GroupSchedulePairEntity>
     {
+        /// <summary>
+        /// Lookup group schedule IDs for groups starting with specified prefix.
+        /// </summary>
+        /// <param name="groupNamePrefix">Group name prefix to search for.</param>
+        /// <returns>List of groups starting with specified prefix.</returns>
+        Task<IEnumerable<GroupEntity>> SearchGroupSchedules(string groupNamePrefix);
     }
 }

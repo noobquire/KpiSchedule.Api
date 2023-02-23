@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpiSchedule.Api", "KpiSched
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpiSchedule.Services", "KpiSchedule.Services\KpiSchedule.Services.csproj", "{ED3D22F5-486F-4AB8-B7EC-2B8FA5182E51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpiSchedule.DataAccess", "KpiSchedule.DataAccess\KpiSchedule.DataAccess.csproj", "{45D1E1EB-F7AC-4B06-AFD6-A801EE2CA6E1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{ED3D22F5-486F-4AB8-B7EC-2B8FA5182E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED3D22F5-486F-4AB8-B7EC-2B8FA5182E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED3D22F5-486F-4AB8-B7EC-2B8FA5182E51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45D1E1EB-F7AC-4B06-AFD6-A801EE2CA6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45D1E1EB-F7AC-4B06-AFD6-A801EE2CA6E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45D1E1EB-F7AC-4B06-AFD6-A801EE2CA6E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45D1E1EB-F7AC-4B06-AFD6-A801EE2CA6E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

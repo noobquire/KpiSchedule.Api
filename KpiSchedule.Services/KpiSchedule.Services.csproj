@@ -10,4 +10,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="KpiSchedule.Common" Version="0.6.4" />
+  </ItemGroup>
+
 </Project>

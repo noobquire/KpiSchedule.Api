@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KpiSchedule.Api.Controllers
 {
     [Route("schedules/teacher")]
+    [ResponseCache(Duration = 600)]
     [ApiController]
     public class TeacherSchedulesController : ControllerBase
     {
@@ -15,6 +16,11 @@ namespace KpiSchedule.Api.Controllers
             this.teacherSchedulesService = teacherSchedulesService;
         }
 
+        /// <summary>
+        /// Get teacher schedule data by ID.
+        /// </summary>
+        /// <param name="scheduleId">Schedule UUID.</param>
+        /// <returns>Schedule data.</returns>
         [HttpGet("{scheduleId}")]
         [HandleScheduleNotFound]
         public async Task<IActionResult> GetTeacherSchedule([FromRoute] Guid scheduleId)
@@ -23,6 +29,11 @@ namespace KpiSchedule.Api.Controllers
             return Ok(schedule);
         }
 
+        /// <summary>
+        /// Get subjects in teacher schedule by schedule ID.
+        /// </summary>
+        /// <param name="scheduleId">Schedule UUID.</param>
+        /// <returns>Subjects in schedule.</returns>
         [HttpGet("{scheduleId}/subjects")]
         [HandleScheduleNotFound]
         public async Task<IActionResult> GetSubjectsInTeacherSchedule([FromRoute] Guid scheduleId)
@@ -31,10 +42,15 @@ namespace KpiSchedule.Api.Controllers
             return Ok(subjects);
         }
 
+        /// <summary>
+        /// Search teacher schedules by teacher name prefix.
+        /// </summary>
+        /// <param name="teacherNamePrefix">Teacher name prefix query.</param>
+        /// <returns>Teacher schedules search results.</returns>
         [HttpGet("search")]
-        public async Task<IActionResult> SearchTeacherSchedules([FromQuery] string query)
+        public async Task<IActionResult> SearchTeacherSchedules([FromQuery] string teacherNamePrefix)
         {
-            var results = await teacherSchedulesService.SearchTeacherSchedules(query);
+            var results = await teacherSchedulesService.SearchTeacherSchedules(teacherNamePrefix);
             return Ok(results);
         }
     }

@@ -1,0 +1,49 @@
+﻿service: kpi-schedule-api
+app: kpi-schedule
+
+plugins:
+  - serverless-plugin-log-retention
+  - serverless-domain-manager
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'dev'}
+  runtime: dotnet6
+  region: eu-central-1
+  memorySize: 1024
+  # Lambda function's IAM Role
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:*"
+          Resource: "arn:aws:dynamodb:${self:provider.region}:${self:custom.account}:table/KpiSchedule*"
+
+custom:
+  account: 251999958052
+  logRetentionInDays: 30
+  customDomain:
+    domainName: api.kpi-schedule.com
+    basePath: ''
+    certificateName: 'kpi-schedule.com'
+    createRoute53Record: true
+    createRoute53IPv6Record: true
+    endpointType: REGIONAL
+    apiType: http
+    securityPolicy: tls_1_2
+    autoDomain: false
+
+# Service wide environment variables
+environment:
+
+package:
+  artifact: bin/deploy-package.zip
+
+functions:
+  kpi-schedule-api:
+    handler: KpiSchedule.Api::KpiSchedule.Api.LambdaEntryPoint::FunctionHandlerAsync
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: any

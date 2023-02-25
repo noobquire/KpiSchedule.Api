@@ -16,6 +16,11 @@ namespace KpiSchedule.Api.Controllers
             this.groupSchedulesService = groupSchedulesService;
         }
 
+        /// <summary>
+        /// Get group schedule data by ID.
+        /// </summary>
+        /// <param name="scheduleId">Schedule UUID.</param>
+        /// <returns>Schedule data.</returns>
         [HttpGet("{scheduleId}")]
         [HandleScheduleNotFound]
         public async Task<IActionResult> GetGroupSchedule([FromRoute] Guid scheduleId)
@@ -24,6 +29,11 @@ namespace KpiSchedule.Api.Controllers
             return Ok(schedule);
         }
 
+        /// <summary>
+        /// Get subjects in group schedule by schedule ID.
+        /// </summary>
+        /// <param name="scheduleId">Schedule UUID.</param>
+        /// <returns>Subjects in schedule.</returns>
         [HttpGet("{scheduleId}/subjects")]
         [HandleScheduleNotFound]
         public async Task<IActionResult> GetSubjectsInGroupSchedule([FromRoute] Guid scheduleId)
@@ -32,6 +42,11 @@ namespace KpiSchedule.Api.Controllers
             return Ok(subjects);
         }
 
+        /// <summary>
+        /// Get teachers in group schedule by schedule ID.
+        /// </summary>
+        /// <param name="scheduleId">Schedule UUID.</param>
+        /// <returns>Teachers in schedule.</returns>
         [HttpGet("{scheduleId}/teachers")]
         [HandleScheduleNotFound]
         public async Task<IActionResult> GetTeachersInGroupSchedule([FromRoute] Guid scheduleId)
@@ -40,10 +55,15 @@ namespace KpiSchedule.Api.Controllers
             return Ok(teachers);
         }
 
+        /// <summary>
+        /// Search group schedules by group name prefix.
+        /// </summary>
+        /// <param name="groupNamePrefix">Group name prefix query.</param>
+        /// <returns>Group schedules search results.</returns>
         [HttpGet("search")]
-        public async Task<IActionResult> SearchGroupSchedules([FromQuery] string query)
+        public async Task<IActionResult> SearchGroupSchedules([FromQuery] string groupNamePrefix)
         {
-            var results = await groupSchedulesService.SearchGroupSchedules(query);
+            var results = await groupSchedulesService.SearchGroupSchedules(groupNamePrefix);
             return Ok(results);
         }
     }

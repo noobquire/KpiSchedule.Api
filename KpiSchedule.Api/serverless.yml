@@ -4,6 +4,7 @@ app: kpi-schedule
 plugins:
   - serverless-plugin-log-retention
   - serverless-domain-manager
+  - serverless-prune-plugin
 
 provider:
   name: aws
@@ -23,6 +24,9 @@ provider:
 custom:
   account: 251999958052
   logRetentionInDays: 30
+  prune:
+    automatic: true
+    number: 3
   customDomain:
     domainName: api.kpi-schedule.com
     basePath: ''

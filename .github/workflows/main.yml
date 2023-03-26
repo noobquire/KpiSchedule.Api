@@ -51,5 +51,5 @@ jobs:
           serverless plugin install -n serverless-prune-plugin &&
           serverless plugin install -n serverless-plugin-log-retention &&
           serverless create_domain &&
-          serverless deploy"
+          serverless deploy --param="telegramBotToken=${{ secrets.TELEGRAM_BOT_TOKEN }}" --param="jwtSecretKey=${{ secrets.JWT_SECRET }}"
         entrypoint: /bin/sh

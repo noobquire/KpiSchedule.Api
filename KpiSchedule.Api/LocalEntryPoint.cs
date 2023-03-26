@@ -15,6 +15,14 @@
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureAppConfiguration(c =>
+                    {
+                        c.SetBasePath(AppDomain.CurrentDomain.BaseDirectory);
+                        c.AddJsonFile("appsettings.json");
+                        c.AddJsonFile($"appsettings.Development.json");
+                        c.AddEnvironmentVariables();
+                        c.AddUserSecrets<LocalEntryPoint>();
+                    });
                 });
     }
 }

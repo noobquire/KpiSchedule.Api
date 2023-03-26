@@ -9,7 +9,7 @@ namespace KpiSchedule.Services.Interfaces
         Task<StudentScheduleEntity> CreateStudentScheduleFromGroupSchedule(Guid groupScheduleId, IEnumerable<string> subjectNames);
         Task<IEnumerable<StudentScheduleEntity>> GetSchedulesForStudent(Guid userId);
         Task<StudentScheduleEntity> UpdatePair(Guid scheduleId, PairIdentifier pairId, StudentSchedulePairEntity pair);
-        Task<StudentScheduleEntity> DeletePair(Guid scheduleId);
+        Task<StudentScheduleEntity> DeletePair(Guid scheduleId, PairIdentifier pairId);
         Task<StudentScheduleEntity> UpdateScheduleVisibility(Guid scheduleId, bool isPublic);
         Task DeleteSchedule(Guid scheduleId);
     }

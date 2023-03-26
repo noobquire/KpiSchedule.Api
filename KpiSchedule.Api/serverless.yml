@@ -22,6 +22,8 @@ provider:
           Resource: "arn:aws:dynamodb:${self:provider.region}:${self:custom.account}:table/KpiSchedule*"
 
 custom:
+  telegramBotToken: ${param:botToken, "Telegram Bot token used for authentication goes here"}
+  jwtSecretKey: ${param:jwtKey, "Secret used to create JWT bearer tokens goes here"}
   account: 251999958052
   logRetentionInDays: 30
   prune:
@@ -47,6 +49,9 @@ package:
 functions:
   kpi-schedule-api:
     handler: KpiSchedule.Api::KpiSchedule.Api.LambdaEntryPoint::FunctionHandlerAsync
+    environment:
+      Telegram__BotToken: ${self:custom.telegramBotToken}
+      Jwt__Key: ${self:custom.jwtSecretKey}
     events:
       - httpApi:
           path: /{proxy+}

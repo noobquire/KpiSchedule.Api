@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpiSchedule.Api", "KpiSchedule.Api\KpiSchedule.Api.csproj", "{6B98559A-8B9E-405E-8CD2-F7110026CAB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KpiSchedule.Api", "KpiSchedule.Api\KpiSchedule.Api.csproj", "{6B98559A-8B9E-405E-8CD2-F7110026CAB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpiSchedule.Services", "KpiSchedule.Services\KpiSchedule.Services.csproj", "{ED3D22F5-486F-4AB8-B7EC-2B8FA5182E51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KpiSchedule.Services", "KpiSchedule.Services\KpiSchedule.Services.csproj", "{ED3D22F5-486F-4AB8-B7EC-2B8FA5182E51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

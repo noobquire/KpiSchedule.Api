@@ -1,5 +1,5 @@
 ﻿using KpiSchedule.Api.Models.Responses;
-using KpiSchedule.Common.Exceptions;
+using KpiSchedule.Services.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
@@ -7,19 +7,19 @@ using System.Text.Json;
 
 namespace KpiSchedule.Api.Filters
 {
-    public class HandleScheduleNotFoundExceptionAttribute : ExceptionFilterAttribute
+    public class HandleInvalidAuthenticationAttribute : ExceptionFilterAttribute
     {
         public override void OnException(ExceptionContext context)
         {
-            
-            if (context.Exception is not ScheduleNotFoundException)
+
+            if (context.Exception is not InvalidAuthenticationException)
             {
                 return;
             }
 
             var response = new ErrorResponse()
             {
-                StatusCode = HttpStatusCode.NotFound,
+                StatusCode = HttpStatusCode.Unauthorized,
                 Message = context.Exception.Message
             };
             var serializerOptions = new JsonSerializerOptions()
@@ -32,7 +32,7 @@ namespace KpiSchedule.Api.Filters
             context.Result = new ContentResult()
             {
                 Content = responseJson,
-                StatusCode = (int)HttpStatusCode.NotFound
+                StatusCode = (int)HttpStatusCode.Unauthorized
             };
         }
     }

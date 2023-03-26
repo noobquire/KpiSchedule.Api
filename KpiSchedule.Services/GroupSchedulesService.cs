@@ -43,7 +43,7 @@ namespace KpiSchedule.Services
             var uppercasePrefix = groupNamePrefix.ToUpper();
             var results = await groupSchedulesRepository.SearchGroupSchedules(uppercasePrefix);
 
-            return results;
+            return results.OrderBy(s => s.GroupName);
         }
     }
 }

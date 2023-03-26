@@ -22,7 +22,7 @@ namespace KpiSchedule.Api.Controllers
         /// <param name="scheduleId">Schedule UUID.</param>
         /// <returns>Schedule data.</returns>
         [HttpGet("{scheduleId}")]
-        [HandleScheduleNotFound]
+        [HandleScheduleNotFoundException]
         public async Task<IActionResult> GetTeacherSchedule([FromRoute] Guid scheduleId)
         {
             var schedule = await teacherSchedulesService.GetTeacherScheduleById(scheduleId);
@@ -35,7 +35,7 @@ namespace KpiSchedule.Api.Controllers
         /// <param name="scheduleId">Schedule UUID.</param>
         /// <returns>Subjects in schedule.</returns>
         [HttpGet("{scheduleId}/subjects")]
-        [HandleScheduleNotFound]
+        [HandleScheduleNotFoundException]
         public async Task<IActionResult> GetSubjectsInTeacherSchedule([FromRoute] Guid scheduleId)
         {
             var subjects = await teacherSchedulesService.GetSubjectsInTeacherSchedule(scheduleId);
@@ -48,9 +48,10 @@ namespace KpiSchedule.Api.Controllers
         /// <param name="teacherNamePrefix">Teacher name prefix query.</param>
         /// <returns>Teacher schedules search results.</returns>
         [HttpGet("search")]
-        public async Task<IActionResult> SearchTeacherSchedules([FromQuery] string teacherNamePrefix)
+        public async Task<IActionResult> SearchTeacherSchedules([FromQuery] string teacherNamePrefix, [FromQuery] int maxResults = 10)
         {
-            var results = await teacherSchedulesService.SearchTeacherSchedules(teacherNamePrefix);
+            var results = (await teacherSchedulesService.SearchTeacherSchedules(teacherNamePrefix))
+                .Take(maxResults);
             return Ok(results);
         }
     }

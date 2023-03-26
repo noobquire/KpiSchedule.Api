@@ -37,7 +37,7 @@ namespace KpiSchedule.Services
             var query = teacherNamePrefix[0].ToString().ToUpper() + queryEnd;
 
             var searchResults = await teacherSchedulesRepository.SearchTeacherSchedules(query);
-            return searchResults;
+            return searchResults.OrderBy(s => s.TeacherName);
         }
     }
 }

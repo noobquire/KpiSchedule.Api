@@ -50,6 +50,5 @@ jobs:
           serverless plugin install -n serverless-domain-manager &&
           serverless plugin install -n serverless-prune-plugin &&
           serverless plugin install -n serverless-plugin-log-retention &&
-          serverless create_domain &&
           serverless deploy --param="botToken=${{ secrets.TELEGRAM_BOT_TOKEN }}" --param="jwtKey=${{ secrets.JWT_SECRET }}"
         entrypoint: /bin/sh

@@ -5,6 +5,7 @@ using KpiSchedule.Services.Authorization;
 using KpiSchedule.Services.Exceptions;
 using KpiSchedule.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
@@ -28,7 +29,7 @@ namespace KpiSchedule.Services
             this.groupSchedulesRepository = groupSchedulesRepository;
             this.httpContextAccessor = httpContextAccessor;
             this.authorizationService = authorizationService;
-            
+
             this.user = httpContextAccessor.HttpContext.User;
         }
 
@@ -45,12 +46,15 @@ namespace KpiSchedule.Services
                 throw new KpiScheduleServiceException("Provided group schedule does not contain all the provieded subjects.");
             }
 
+            var userId = GetUserId();
+
             var studentSchedule = new StudentScheduleEntity()
             {
-                IsPrivate = true,
+                IsPublic = false,
                 ScheduleId = Guid.NewGuid(),
-                FirstWeek = FilterScheduleWeek(groupSchedule.FirstWeek, subjectNames),
-                SecondWeek = FilterScheduleWeek(groupSchedule.SecondWeek, subjectNames)
+                FirstWeek = FilterGroupScheduleWeek(groupSchedule.FirstWeek, subjectNames),
+                SecondWeek = FilterGroupScheduleWeek(groupSchedule.SecondWeek, subjectNames),
+                OwnerId = userId
             };
 
             await studentSchedulesRepository.PutSchedule(studentSchedule);
@@ -61,8 +65,16 @@ namespace KpiSchedule.Services
         public async Task<StudentScheduleEntity> DeletePair(Guid scheduleId, PairIdentifier pairId)
         {
             var schedule = await GetStudentScheduleById(scheduleId);
-            await AuthorizeWriteOperation(schedule);
-            schedule.RemoveSchedulePair(pairId);
+            await AuthorizeOperation(StudentScheduleRequirements.ReadSchedule, schedule);
+            try
+            {
+                schedule.RemoveSchedulePair(pairId);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new KpiScheduleServiceException($"Unable to delete pair from schedule: {ex.Message}");
+            }
+
             await studentSchedulesRepository.PutSchedule(schedule);
             return schedule;
         }
@@ -72,16 +84,19 @@ namespace KpiSchedule.Services
             await studentSchedulesRepository.DeleteSchedule(scheduleId);
         }
 
-        public Task<IEnumerable<StudentScheduleEntity>> GetSchedulesForStudent(Guid userId)
+        public async Task<IEnumerable<StudentScheduleSearchResult>> GetSchedulesForStudent(string userId)
         {
-            var schedules = studentSchedulesRepository.GetSchedulesForStudent(userId);
-            return schedules;
+            var schedules = await studentSchedulesRepository.GetSchedulesForStudent(userId);
+            var currentUserId = GetUserId();
+            // if schedules belong to current user, just return them
+            // if they belong to another user, only return public schedules
+            return userId == currentUserId ? schedules : schedules.Where(s => s.IsPublic);
         }
 
         public async Task<StudentScheduleEntity> GetStudentScheduleById(Guid scheduleId)
         {
             var schedule = await studentSchedulesRepository.GetScheduleById(scheduleId);
-            await AuthorizeReadOperation(schedule);
+            await AuthorizeOperation(StudentScheduleRequirements.ReadSchedule, schedule);
 
             return schedule;
         }
@@ -89,7 +104,7 @@ namespace KpiSchedule.Services
         public async Task<IEnumerable<SubjectEntity>> GetSubjectsInStudentSchedule(Guid scheduleId)
         {
             var schedule = await GetStudentScheduleById(scheduleId);
-            await AuthorizeReadOperation(schedule);
+            await AuthorizeOperation(StudentScheduleRequirements.ReadSchedule, schedule);
 
             var subjects = await studentSchedulesRepository.GetScheduleSubjects(scheduleId);
             return subjects;
@@ -98,7 +113,7 @@ namespace KpiSchedule.Services
         public async Task<StudentScheduleEntity> UpdatePair(Guid scheduleId, PairIdentifier pairId, StudentSchedulePairEntity pair)
         {
             var schedule = await GetStudentScheduleById(scheduleId);
-            await AuthorizeWriteOperation(schedule);
+            await AuthorizeOperation(StudentScheduleRequirements.WriteSchedule, schedule);
             schedule.UpdateSchedulePair(pairId, pair);
             await studentSchedulesRepository.PutSchedule(schedule);
             return schedule;
@@ -107,8 +122,8 @@ namespace KpiSchedule.Services
         public async Task<StudentScheduleEntity> UpdateScheduleVisibility(Guid scheduleId, bool isPublic)
         {
             var schedule = await GetStudentScheduleById(scheduleId);
-            await AuthorizeWriteOperation(schedule);
-            schedule.IsPrivate = isPublic;
+            await AuthorizeOperation(StudentScheduleRequirements.WriteSchedule, schedule);
+            schedule.IsPublic = isPublic;
             await studentSchedulesRepository.PutSchedule(schedule);
             return schedule;
         }
@@ -120,7 +135,7 @@ namespace KpiSchedule.Services
             return subjects.All(s => scheduleSubjectNames.Contains(s));
         }
 
-        private List<StudentScheduleDayEntity> FilterScheduleWeek(IEnumerable<GroupScheduleDayEntity> groupScheduleWeek, IEnumerable<string> subjectNames)
+        private List<StudentScheduleDayEntity> FilterGroupScheduleWeek(IEnumerable<GroupScheduleDayEntity> groupScheduleWeek, IEnumerable<string> subjectNames)
         {
             var studentScheduleWeek = groupScheduleWeek.Select(d => new StudentScheduleDayEntity()
             {
@@ -141,22 +156,19 @@ namespace KpiSchedule.Services
             return studentScheduleWeek;
         }
 
-        private async Task AuthorizeReadOperation(StudentScheduleEntity studentSchedule)
+        private async Task AuthorizeOperation(OperationAuthorizationRequirement operation, StudentScheduleEntity studentSchedule)
         {
-            var authorizationResult = await authorizationService.AuthorizeAsync(user, studentSchedule, StudentScheduleRequirements.ReadSchedule);
+            var authorizationResult = await authorizationService.AuthorizeAsync(user, studentSchedule, operation);
             if (!authorizationResult.Succeeded)
             {
-                throw new ScheduleOperationUnauthorizedException(StudentScheduleRequirements.ReadSchedule);
+                throw new ScheduleOperationUnauthorizedException(operation);
             }
         }
 
-        private async Task AuthorizeWriteOperation(StudentScheduleEntity studentSchedule)
+        private string GetUserId()
         {
-            var authorizationResult = await authorizationService.AuthorizeAsync(user, studentSchedule, StudentScheduleRequirements.WriteSchedule);
-            if (!authorizationResult.Succeeded)
-            {
-                throw new ScheduleOperationUnauthorizedException(StudentScheduleRequirements.WriteSchedule);
-            }
+            var userId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            return userId;
         }
     }
 }

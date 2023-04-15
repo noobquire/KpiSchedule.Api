@@ -11,7 +11,7 @@ namespace KpiSchedule.Services.Authorization
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, StudentScheduleEntity resource)
         {
-            if (!resource.IsPrivate && requirement.Name == StudentScheduleRequirements.ReadSchedule.Name)
+            if (resource.IsPublic && requirement.Name == StudentScheduleRequirements.ReadSchedule.Name)
             {
                 context.Succeed(requirement);
             }

@@ -12,6 +12,8 @@ using System.Text;
 using KpiSchedule.Services.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using KpiSchedule.Services.Authorization;
 
 namespace KpiSchedule.Api
 {
@@ -39,7 +41,9 @@ namespace KpiSchedule.Api
                 .AddScoped<IAuthenticationService, AuthenticationService>()
                 .AddScoped<IGroupSchedulesService, GroupSchedulesService>()
                 .AddScoped<ITeacherSchedulesService, TeacherSchedulesService>()
-                .AddScoped<IStudentSchedulesService, StudentSchedulesService>();
+                .AddScoped<IStudentSchedulesService, StudentSchedulesService>()
+                .AddScoped<IAuthorizationHandler, PublicScheduleAuthorizationHandler>()
+                .AddScoped<IAuthorizationHandler, ScheduleOwnerAuthorizationHandler>();
 
             services.AddAuthentication(options =>
             {
@@ -60,7 +64,11 @@ namespace KpiSchedule.Api
                     ValidateIssuerSigningKey = true
                 };
             });
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ReadStudentSchedulePolicy", p => p.AddRequirements(StudentScheduleRequirements.ReadSchedule));
+                options.AddPolicy("WriteStudentSchedulePolicy", p => p.AddRequirements(StudentScheduleRequirements.WriteSchedule));
+            });
 
             services.AddMvc();
             services.AddRazorPages();

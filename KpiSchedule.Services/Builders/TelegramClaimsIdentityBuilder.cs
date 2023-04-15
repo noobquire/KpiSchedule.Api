@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using KpiSchedule.Services.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace KpiSchedule.Services.Builders
@@ -9,7 +10,7 @@ namespace KpiSchedule.Services.Builders
 
         public TelegramClaimsIdentityBuilder AddTelegramUserId(string id)
         {
-            claims.Add(new Claim("userId", id));
+            claims.Add(new Claim(ClaimNames.UserId, id));
             return this;
         }
 
@@ -27,7 +28,7 @@ namespace KpiSchedule.Services.Builders
 
         public TelegramClaimsIdentityBuilder AddTelegramFirstName(string firstName)
         {
-            claims.Add(new Claim("firstName", firstName));
+            claims.Add(new Claim(ClaimNames.FirstName, firstName));
             return this;
         }
 
@@ -35,7 +36,7 @@ namespace KpiSchedule.Services.Builders
         {
             if(lastName is null) return this;
 
-            claims.Add(new Claim("lastName", lastName));
+            claims.Add(new Claim(ClaimNames.LastName, lastName));
             return this;
         }
 
@@ -43,7 +44,7 @@ namespace KpiSchedule.Services.Builders
         {
             if (photoUrl is null) return this;
 
-            claims.Add(new Claim("photoUrl", photoUrl));
+            claims.Add(new Claim(ClaimNames.PhotoUrl, photoUrl));
             return this;
         }
 
@@ -51,7 +52,7 @@ namespace KpiSchedule.Services.Builders
         {
             if (username is null) return this;
 
-            claims.Add(new Claim("username", username));
+            claims.Add(new Claim(ClaimNames.Username, username));
             return this;
         }
 

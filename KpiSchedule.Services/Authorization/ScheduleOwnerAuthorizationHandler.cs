@@ -11,7 +11,14 @@ namespace KpiSchedule.Services.Authorization
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, StudentScheduleEntity resource)
         {
-            if (context.User.Identity?.Name == resource.OwnerId.ToString() &&
+            var userIdClaim = context.User.FindFirst(c => c.Type == ClaimNames.UserId);
+
+            if (userIdClaim == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            if (userIdClaim.Value == resource.OwnerId.ToString() &&
             requirement.Name == StudentScheduleRequirements.ReadSchedule.Name ||
             requirement.Name == StudentScheduleRequirements.WriteSchedule.Name)
             {

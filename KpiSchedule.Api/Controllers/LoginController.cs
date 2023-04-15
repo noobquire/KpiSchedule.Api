@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KpiSchedule.Api.Controllers
 {
-    [Route("api/login")]
+    [Route("login")]
     [ApiController]
     public class LoginController : ControllerBase
     {

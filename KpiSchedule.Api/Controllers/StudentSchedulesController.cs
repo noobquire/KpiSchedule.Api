@@ -1,4 +1,5 @@
 ﻿using KpiSchedule.Api.Filters;
+using KpiSchedule.Api.Mappers;
 using KpiSchedule.Api.Models.Requests;
 using KpiSchedule.Common.Entities;
 using KpiSchedule.Services.Interfaces;
@@ -26,6 +27,7 @@ namespace KpiSchedule.Api.Controllers
         /// <returns>Schedule data.</returns>
         [HttpGet("{scheduleId}")]
         [HandleScheduleNotFoundException]
+        [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> GetStudentSchedule([FromRoute] Guid scheduleId)
         {
             var schedule = await studentSchedulesService.GetStudentScheduleById(scheduleId);
@@ -39,6 +41,7 @@ namespace KpiSchedule.Api.Controllers
         /// <returns>Subjects in schedule.</returns>
         [HttpGet("{scheduleId}/subjects")]
         [HandleScheduleNotFoundException]
+        [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> GetSubjectsInStudentSchedule([FromRoute] Guid scheduleId)
         {
             var subjects = await studentSchedulesService.GetSubjectsInStudentSchedule(scheduleId);
@@ -47,7 +50,7 @@ namespace KpiSchedule.Api.Controllers
 
         [HttpPost]
         [HandleScheduleNotFoundException]
-        //[HandleScheduleServiceException]
+        [HandleScheduleServiceException]
         public async Task<IActionResult> CreateStudentSchedule([FromBody] CreateStudentScheduleRequest request)
         {
             // TODO: Authorize
@@ -57,6 +60,7 @@ namespace KpiSchedule.Api.Controllers
 
         [HttpDelete("{scheduleId}")]
         [HandleScheduleNotFoundException]
+        [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> DeleteSchedule([FromRoute] Guid scheduleId)
         {
             // TODO: Authorize
@@ -66,6 +70,8 @@ namespace KpiSchedule.Api.Controllers
 
         [HttpDelete("{scheduleId}/pair")]
         [HandleScheduleNotFoundException]
+        [HandleScheduleServiceException]
+        [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> DeleteSchedulePair([FromRoute] Guid scheduleId, [FromBody] DeleteSchedulePairRequest request)
         {
             var pairId = new PairIdentifier
@@ -79,27 +85,27 @@ namespace KpiSchedule.Api.Controllers
             return Ok(schedule);
         }
 
-        /*
         [HttpPut("{scheduleId}/pair")]
         [HandleScheduleNotFoundException]
+        [HandleScheduleServiceException]
+        [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> UpdateSchedulePair([FromRoute] Guid scheduleId, [FromBody] UpdateSchedulePairRequest request)
         {
-            var pair = new StudentSchedulePairEntity()
-            {
-
-            };
+            var pairEntity = request.MapToEntity();
+            var updatedSchedule = await studentSchedulesService.UpdatePair(scheduleId, request.PairId, pairEntity);
+            return Ok(updatedSchedule);
         }
-        */
 
         [HttpGet("~/student/{studentId}/schedules")]
-        public async Task<IActionResult> GetSchedulesForStudent([FromRoute] Guid studentId)
+        public async Task<IActionResult> GetSchedulesForStudent([FromRoute] string studentId)
         {
             var schedules = await studentSchedulesService.GetSchedulesForStudent(studentId);
             return Ok(schedules);
         }
 
-        [HttpPatch]
+        [HttpPatch("{scheduleId}/visibility")]
         [HandleScheduleNotFoundException]
+        [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> UpdateScheduleVisibility([FromRoute] Guid scheduleId, [FromQuery] bool isPublic)
         {
             var schedule = await studentSchedulesService.UpdateScheduleVisibility(scheduleId, isPublic);

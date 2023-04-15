@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KpiSchedule.Services.Models
+﻿namespace KpiSchedule.Services.Models
 {
+    /// <summary>
+    /// Model to contain JWT token with authentication data.
+    /// </summary>
     public class JwtToken
     {
+        /// <summary>
+        /// JWT access token.
+        /// </summary>
         public string Token { get; set; }
+
+        /// <summary>
+        /// Token expiration UTC timestamp.
+        /// </summary>
         public DateTime ExpiresAt { get; set; }
     }
 }

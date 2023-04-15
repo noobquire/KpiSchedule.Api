@@ -6,7 +6,7 @@ namespace KpiSchedule.Services.Exceptions
     /// Exception indicating a business logic issue in KpiSchedule API.
     /// </summary>
     [Serializable]
-    internal class KpiScheduleServiceException : Exception
+    public class KpiScheduleServiceException : Exception
     {
         /// <summary>
         /// Initialize a new instance of the <see cref="KpiScheduleServiceException"/> class.

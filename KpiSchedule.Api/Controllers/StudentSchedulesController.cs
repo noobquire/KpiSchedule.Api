@@ -70,7 +70,7 @@ namespace KpiSchedule.Api.Controllers
         [HandleScheduleNotFoundException]
         [HandleScheduleServiceException]
         [HandleScheduleOperationUnauthorizedException]
-        public async Task<IActionResult> DeleteSchedulePair([FromRoute] Guid scheduleId, [FromBody] DeleteSchedulePairRequest request)
+        public async Task<IActionResult> DeleteSchedulePair([FromRoute] Guid scheduleId, [FromQuery] DeleteSchedulePairRequest request)
         {
             var pairId = new PairIdentifier
             {

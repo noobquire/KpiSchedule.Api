@@ -1,10 +1,18 @@
-﻿namespace KpiSchedule.Api.Models.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace KpiSchedule.Api.Models.Requests
 {
     public class DeleteSchedulePairRequest
     {
-        public int WeekNumber { get; set; }
-        public int DayNumber { get; set; }
-        public int PairNumber { get; set; }
-        public int DuplicatePairNumber { get; set; }
+        [Required]
+        public int Week { get; set; }
+
+        [Required]
+        public int Day { get; set; }
+
+        [Required]
+        public int Pair { get; set; }
+
+        public int DupPair { get; set; } = 1;
     }
 }

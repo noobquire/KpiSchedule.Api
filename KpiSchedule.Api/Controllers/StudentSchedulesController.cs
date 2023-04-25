@@ -74,10 +74,10 @@ namespace KpiSchedule.Api.Controllers
         {
             var pairId = new PairIdentifier
             {
-                WeekNumber = request.WeekNumber,
-                DayNumber = request.DayNumber,
-                PairNumber = request.PairNumber,
-                DuplicatePairNumber = request.DuplicatePairNumber
+                WeekNumber = request.Week,
+                DayNumber = request.Day,
+                PairNumber = request.Pair,
+                DuplicatePairNumber = request.DupPair
             };
             var schedule = await studentSchedulesService.DeletePair(scheduleId, pairId);
             return Ok(schedule);

@@ -18,17 +18,17 @@
         /// <summary>
         /// User last name. Optional.
         /// </summary>
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Username (@tag). Optional.
         /// </summary>
-        public string? Username { get; set; }
+        public string Username { get; set; }
         
         /// <summary>
         /// User photo URL. Optional.
         /// </summary>
-        public string? PhotoUrl { get; set; }
+        public string PhotoUrl { get; set; }
 
         /// <summary>
         /// Authentication UTC timestamp.

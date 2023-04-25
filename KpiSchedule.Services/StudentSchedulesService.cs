@@ -1,5 +1,9 @@
 ﻿using KpiSchedule.Common.Entities;
+using KpiSchedule.Common.Entities.Base;
+using KpiSchedule.Common.Entities.Group;
+using KpiSchedule.Common.Entities.Student;
 using KpiSchedule.Common.Exceptions;
+using KpiSchedule.Common.Models;
 using KpiSchedule.Common.Repositories.Interfaces;
 using KpiSchedule.Services.Authorization;
 using KpiSchedule.Services.Exceptions;
@@ -96,6 +100,10 @@ namespace KpiSchedule.Services
         public async Task<StudentScheduleEntity> GetStudentScheduleById(Guid scheduleId)
         {
             var schedule = await studentSchedulesRepository.GetScheduleById(scheduleId);
+            if (schedule is null)
+            {
+                throw new ScheduleNotFoundException();
+            }
             await AuthorizeOperation(StudentScheduleRequirements.ReadSchedule, schedule);
 
             return schedule;

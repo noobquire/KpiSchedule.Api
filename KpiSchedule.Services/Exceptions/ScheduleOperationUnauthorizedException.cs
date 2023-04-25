@@ -28,7 +28,7 @@ namespace KpiSchedule.Services.Exceptions
         /// Initialize a new instance of the <see cref="ScheduleOperationUnauthorizedException"/> class.
         /// </summary>
         /// <param name="message">Exception message.</param>
-        public ScheduleOperationUnauthorizedException(string? message) : base(message)
+        public ScheduleOperationUnauthorizedException(string message) : base(message)
         {
         }
 
@@ -38,7 +38,7 @@ namespace KpiSchedule.Services.Exceptions
         /// <param name="message">Exception message.</param>
         /// <param name="innerException">Inner exception.</param>
 
-        public ScheduleOperationUnauthorizedException(string? message, Exception? innerException) : base(message, innerException)
+        public ScheduleOperationUnauthorizedException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

@@ -1,4 +1,5 @@
-﻿using KpiSchedule.Common.Entities;
+﻿using KpiSchedule.Common.Entities.Base;
+using KpiSchedule.Common.Entities.Teacher;
 
 namespace KpiSchedule.Services.Interfaces
 {

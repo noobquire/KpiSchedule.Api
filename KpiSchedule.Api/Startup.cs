@@ -1,19 +1,19 @@
-﻿using KpiSchedule.Common.Entities;
-using KpiSchedule.Common.Repositories.Interfaces;
+﻿using KpiSchedule.Common.Repositories.Interfaces;
 using KpiSchedule.Common.Repositories;
 using KpiSchedule.Services.Interfaces;
 using KpiSchedule.Services;
 using Serilog.Events;
 using KpiSchedule.Common.ServiceCollectionExtensions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using KpiSchedule.Services.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using KpiSchedule.Services.Authorization;
+using KpiSchedule.Common.Entities.Group;
+using KpiSchedule.Common.Entities.Teacher;
+using KpiSchedule.Common.Entities.Student;
 
 namespace KpiSchedule.Api
 {

@@ -1,5 +1,6 @@
 ﻿using KpiSchedule.Api.Models.Requests;
-using KpiSchedule.Common.Entities;
+using KpiSchedule.Common.Entities.Student;
+using KpiSchedule.Common.Entities.Teacher;
 using KpiSchedule.Common.Models;
 using KpiSchedule.Common.Parsers;
 using KpiSchedule.Common.Utils;

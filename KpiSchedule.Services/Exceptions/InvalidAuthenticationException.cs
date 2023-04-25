@@ -19,7 +19,7 @@ namespace KpiSchedule.Services.Exceptions
         /// Initialize a new instance of the <see cref="InvalidAuthenticationException"/> class.
         /// </summary>
         /// <param name="message">Exception message.</param>
-        public InvalidAuthenticationException(string? message) : base(message)
+        public InvalidAuthenticationException(string message) : base(message)
         {
         }
 
@@ -29,7 +29,7 @@ namespace KpiSchedule.Services.Exceptions
         /// <param name="message">Exception message.</param>
         /// <param name="innerException">Inner exception.</param>
 
-        public InvalidAuthenticationException(string? message, Exception? innerException) : base(message, innerException)
+        public InvalidAuthenticationException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

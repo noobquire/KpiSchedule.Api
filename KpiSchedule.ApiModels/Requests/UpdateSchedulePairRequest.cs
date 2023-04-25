@@ -1,4 +1,4 @@
-﻿using KpiSchedule.Common.Entities;
+﻿using KpiSchedule.Common.Entities.Base;
 using KpiSchedule.Common.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +10,7 @@ namespace KpiSchedule.Api.Models.Requests
         /// Pair identifier.
         /// </summary>
         [Required]
-        public Common.Entities.PairIdentifier PairId { get; set; }
+        public Common.Models.PairIdentifier PairId { get; set; }
 
         [EnumDataType(typeof(PairType))]
         [Required]

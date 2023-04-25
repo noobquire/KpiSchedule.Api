@@ -1,7 +1,7 @@
 ﻿using KpiSchedule.Api.Filters;
 using KpiSchedule.Api.Mappers;
 using KpiSchedule.Api.Models.Requests;
-using KpiSchedule.Common.Entities;
+using KpiSchedule.Common.Models;
 using KpiSchedule.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +53,6 @@ namespace KpiSchedule.Api.Controllers
         [HandleScheduleServiceException]
         public async Task<IActionResult> CreateStudentSchedule([FromBody] CreateStudentScheduleRequest request)
         {
-            // TODO: Authorize
             var studentSchedule = await studentSchedulesService.CreateStudentScheduleFromGroupSchedule(request.GroupScheduleId, request.SubjectNames);
             return Ok(studentSchedule);
         }
@@ -63,7 +62,6 @@ namespace KpiSchedule.Api.Controllers
         [HandleScheduleOperationUnauthorizedException]
         public async Task<IActionResult> DeleteSchedule([FromRoute] Guid scheduleId)
         {
-            // TODO: Authorize
             await studentSchedulesService.DeleteSchedule(scheduleId);
             return NoContent();
         }

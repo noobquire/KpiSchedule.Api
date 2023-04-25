@@ -1,4 +1,5 @@
-﻿using KpiSchedule.Common.Entities;
+﻿using KpiSchedule.Common.Entities.Base;
+using KpiSchedule.Common.Entities.Teacher;
 using KpiSchedule.Common.Exceptions;
 using KpiSchedule.Common.Repositories.Interfaces;
 using KpiSchedule.Services.Interfaces;

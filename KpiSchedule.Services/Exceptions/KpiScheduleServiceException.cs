@@ -19,7 +19,7 @@ namespace KpiSchedule.Services.Exceptions
         /// Initialize a new instance of the <see cref="KpiScheduleServiceException"/> class.
         /// </summary>
         /// <param name="message">Exception message.</param>
-        public KpiScheduleServiceException(string? message) : base(message)
+        public KpiScheduleServiceException(string message) : base(message)
         {
         }
 
@@ -29,7 +29,7 @@ namespace KpiSchedule.Services.Exceptions
         /// <param name="message">Exception message.</param>
         /// <param name="innerException">Inner exception.</param>
 
-        public KpiScheduleServiceException(string? message, Exception? innerException) : base(message, innerException)
+        public KpiScheduleServiceException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

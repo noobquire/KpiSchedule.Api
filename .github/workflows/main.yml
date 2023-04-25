@@ -6,6 +6,28 @@ on:
       - master
 
 jobs:
+  publish-models-package:
+    name: publish models package
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+      
+    - name: Build models project and generate NuGet package
+        run: cd ./KpiSchedule.Api.Models && dotnet build -c Release
+
+    - name: Push generated package to NuGet.org
+        run: dotnet nuget push ./KpiSchedule.Api.Models/bin/Release/*.nupkg --skip-duplicate --no-symbols -k ${{ secrets.NUGET_API_KEY }} -s ${{ secrets.NUGET_URL }}
+  
   deploy:
     name: deploy
     runs-on: ubuntu-latest

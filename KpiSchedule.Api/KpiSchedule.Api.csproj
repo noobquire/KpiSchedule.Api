@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\KpiSchedule.ApiModels\KpiSchedule.Api.Models.csproj" />
+		<ProjectReference Include="..\KpiSchedule.Api.Models\KpiSchedule.Api.Models.csproj" />
 		<ProjectReference Include="..\KpiSchedule.Services\KpiSchedule.Services.csproj" />
 	</ItemGroup>
 

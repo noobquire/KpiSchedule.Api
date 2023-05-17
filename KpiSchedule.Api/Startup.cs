@@ -14,6 +14,7 @@ using KpiSchedule.Services.Authorization;
 using KpiSchedule.Common.Entities.Group;
 using KpiSchedule.Common.Entities.Teacher;
 using KpiSchedule.Common.Entities.Student;
+using KpiSchedule.Api.Configuration;
 
 namespace KpiSchedule.Api
 {
@@ -73,6 +74,15 @@ namespace KpiSchedule.Api
             services.AddMvc();
             services.AddRazorPages();
             services.AddControllers();
+            var corsOptions = Configuration.GetSection("Cors").Get<CorsOptions>();
+            services.AddCors(o => o.AddDefaultPolicy(
+                policy =>
+                {
+                    policy.WithOrigins(corsOptions.AllowedOrigins.ToArray())
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                }
+                ));
 
             services.AddHttpContextAccessor();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -117,10 +127,12 @@ namespace KpiSchedule.Api
                 o.SwaggerEndpoint("/swagger/v1/swagger.json", "KpiSchedule API v1");
             });
 
+            
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors();
 
             app.UseEndpoints(e =>
             {

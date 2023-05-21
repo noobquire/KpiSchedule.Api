@@ -9,5 +9,9 @@ namespace KpiSchedule.Api.Models.Requests
 
         [Required]
         public IEnumerable<string> SubjectNames { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string ScheduleName { get; set; }
     }
 }

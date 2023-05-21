@@ -37,7 +37,7 @@ namespace KpiSchedule.Services
             this.user = httpContextAccessor.HttpContext.User;
         }
 
-        public async Task<StudentScheduleEntity> CreateStudentScheduleFromGroupSchedule(Guid groupScheduleId, IEnumerable<string> subjectNames)
+        public async Task<StudentScheduleEntity> CreateStudentScheduleFromGroupSchedule(Guid groupScheduleId, IEnumerable<string> subjectNames, string scheduleName)
         {
             var groupSchedule = await groupSchedulesRepository.GetScheduleById(groupScheduleId);
             if (groupSchedule is null)
@@ -58,7 +58,8 @@ namespace KpiSchedule.Services
                 ScheduleId = Guid.NewGuid(),
                 FirstWeek = FilterGroupScheduleWeek(groupSchedule.FirstWeek, subjectNames),
                 SecondWeek = FilterGroupScheduleWeek(groupSchedule.SecondWeek, subjectNames),
-                OwnerId = userId
+                OwnerId = userId,
+                ScheduleName = scheduleName
             };
 
             await studentSchedulesRepository.PutSchedule(studentSchedule);
@@ -132,6 +133,15 @@ namespace KpiSchedule.Services
             var schedule = await GetStudentScheduleById(scheduleId);
             await AuthorizeOperation(StudentScheduleRequirements.WriteSchedule, schedule);
             schedule.IsPublic = isPublic;
+            await studentSchedulesRepository.PutSchedule(schedule);
+            return schedule;
+        }
+
+        public async Task<StudentScheduleEntity> UpdateScheduleName(Guid scheduleId, string newName)
+        {
+            var schedule = await GetStudentScheduleById(scheduleId);
+            await AuthorizeOperation(StudentScheduleRequirements.WriteSchedule, schedule);
+            schedule.ScheduleName = newName;
             await studentSchedulesRepository.PutSchedule(schedule);
             return schedule;
         }

@@ -30,7 +30,7 @@ namespace KpiSchedule.Services.Interfaces
         /// <param name="groupScheduleId">Group schedule unique identifier.</param>
         /// <param name="subjectNames">List of subject names to include in student schedule.</param>
         /// <returns>Created student schedule data.</returns>
-        Task<StudentScheduleEntity> CreateStudentScheduleFromGroupSchedule(Guid groupScheduleId, IEnumerable<string> subjectNames);
+        Task<StudentScheduleEntity> CreateStudentScheduleFromGroupSchedule(Guid groupScheduleId, IEnumerable<string> subjectNames, string scheduleName);
 
         /// <summary>
         /// Search student schedules by ID of user which owns them.
@@ -63,6 +63,14 @@ namespace KpiSchedule.Services.Interfaces
         /// <param name="isPublic">Boolean indicating if schedule can be accessed by other users.</param>
         /// <returns>Updated student schedule data.</returns>
         Task<StudentScheduleEntity> UpdateScheduleVisibility(Guid scheduleId, bool isPublic);
+
+        /// <summary>
+        /// Update schedule name.
+        /// </summary>
+        /// <param name="scheduleId">Schedule unique identifier.</param>
+        /// <param name="newName">New schedule name.</param>
+        /// <returns>Updated student schedule data.</returns>
+        Task<StudentScheduleEntity> UpdateScheduleName(Guid scheduleId, string newName);
 
         /// <summary>
         /// Delete schedule data.

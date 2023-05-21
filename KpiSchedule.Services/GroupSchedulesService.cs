@@ -42,7 +42,7 @@ namespace KpiSchedule.Services
 
         public async Task<IEnumerable<GroupScheduleSearchResult>> SearchGroupSchedules(string groupNamePrefix)
         {
-            var uppercasePrefix = groupNamePrefix.ToUpper();
+            var uppercasePrefix = groupNamePrefix?.ToUpper();
             var results = await groupSchedulesRepository.SearchGroupSchedules(uppercasePrefix);
 
             return results.OrderBy(s => s.GroupName);

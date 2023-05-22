@@ -28,6 +28,7 @@ namespace KpiSchedule.Api.Controllers
         [HttpGet("{scheduleId}")]
         [HandleScheduleNotFoundException]
         [HandleScheduleOperationUnauthorizedException]
+        [AllowAnonymous]
         public async Task<IActionResult> GetStudentSchedule([FromRoute] Guid scheduleId)
         {
             var schedule = await studentSchedulesService.GetStudentScheduleById(scheduleId);

@@ -12,6 +12,8 @@ provider:
   runtime: dotnet6
   region: eu-central-1
   memorySize: 1024
+  httpApi:
+    cors: true
   # Lambda function's IAM Role
   iam:
     role:
@@ -39,6 +41,7 @@ custom:
     apiType: http
     securityPolicy: tls_1_2
     autoDomain: false
+
 
 # Service wide environment variables
 environment:

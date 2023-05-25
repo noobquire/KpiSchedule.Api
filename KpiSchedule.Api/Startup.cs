@@ -80,7 +80,8 @@ namespace KpiSchedule.Api
                 {
                     policy.WithOrigins(corsOptions.AllowedOrigins.ToArray())
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 }
                 ));
 

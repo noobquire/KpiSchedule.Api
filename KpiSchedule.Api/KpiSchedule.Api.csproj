@@ -8,7 +8,9 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-	  <UserSecretsId>a2b389c1-a48c-45ef-806b-eb6decf518f4</UserSecretsId>
+		<UserSecretsId>a2b389c1-a48c-45ef-806b-eb6decf518f4</UserSecretsId>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
 	<ItemGroup>

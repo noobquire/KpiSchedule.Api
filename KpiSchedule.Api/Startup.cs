@@ -15,6 +15,8 @@ using KpiSchedule.Common.Entities.Group;
 using KpiSchedule.Common.Entities.Teacher;
 using KpiSchedule.Common.Entities.Student;
 using KpiSchedule.Api.Configuration;
+using System.Reflection;
+using KpiSchedule.Api.Filters;
 
 namespace KpiSchedule.Api
 {
@@ -86,33 +88,35 @@ namespace KpiSchedule.Api
                 ));
 
             services.AddHttpContextAccessor();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(o =>
             {
+                o.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "KPI Schedule API",
+                    Description = "API used to aceess Kyiv Polytechnic Institute's schedule data, create and manage personal schedules",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "by Oleksii Lytvynov",
+                        Email = "ostrich.alexey@gmail.com",
+                        Url = new Uri("https://t.me/ostrich_alexey/")
+                    }
+                });
                 o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please enter a valid bearer token",
+                    Description = "JWT Bearer authentication header.",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });
-                o.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
-                    }
-                });
+
+                o.OperationFilter<AuthOperationFilter>();
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                o.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -128,7 +132,6 @@ namespace KpiSchedule.Api
                 o.SwaggerEndpoint("/swagger/v1/swagger.json", "KpiSchedule API v1");
             });
 
-            
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
